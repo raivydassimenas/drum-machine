@@ -1,6 +1,6 @@
 import './App.css';
 import DrumPad from './DrumPad';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 
 const soundItems = [
@@ -53,32 +53,64 @@ const soundItems = [
 
 function App() {
 
-    const [currentSound, setCurrentSound] = useState('My sound')
+    const [currentSound, setCurrentSound] = useState({ title: "No sound" });
 
+    useEffect(() => {
+        setCurrentSound({title: "No sound"});
+    }, []);
+
+    useEffect(() => {
+        playSound();
+    }, [currentSound]);
 
     const playSound = () => {
-        const audioId = soundItems.filter(item => currentSound === item.title)[0].key;
-        document.getElementById(audioId).play();
+        if (currentSound.title !== "No sound")
+            document.getElementById(currentSound.key).play();
     }
 
     const handleClick = (e) => {
-        const title = e.target.id;
-        setCurrentSound(title);
-        playSound();
+        const soundItemArray = soundItems.filter(soundItem => soundItem.title === e.target.id);
+        const soundItem = soundItemArray.length === 0 ? { title: "No sound" } : soundItemArray[0];
+        setCurrentSound(soundItem);
+        // playSound();
+    }
+
+    const handlePress = (e) => {
+        const soundItemArray = soundItems.filter(soundItem => soundItem.key.charCodeAt(0) + 32 === e.charCode);
+        const soundItem = soundItemArray.length === 0 ? { title: "No sound" } : soundItemArray[0];
+        setCurrentSound(soundItem);
+        // playSound();
     }
 
     return (
         <div>
             <Container>
                 <Row>
-                    <Col id="buttons" xs="6">
-                        {soundItems.map((soundItem, soundItemIdx) => <DrumPad key={soundItemIdx} handleClick={handleClick}
+                    <Col id="buttons" xs="9">
+                        <div>
+                        {soundItems.slice(0,3).map((soundItem, soundItemIdx) => <DrumPad key={soundItemIdx} handleClick={handleClick}
                                                                               audioId={soundItem.key}
                                                                               buttonId={soundItem.title}
-                                                                              url={soundItem.url}/>)}
+                                                                              url={soundItem.url}
+                        handlePress={handlePress}/>)}
+                        </div>
+                        <div>
+                            {soundItems.slice(3,6).map((soundItem, soundItemIdx) => <DrumPad key={soundItemIdx} handleClick={handleClick}
+                                                                                             audioId={soundItem.key}
+                                                                                             buttonId={soundItem.title}
+                                                                                             url={soundItem.url}
+                            handlePress={handlePress}/>)}
+                        </div>
+                        <div>
+                            {soundItems.slice(6,9).map((soundItem, soundItemIdx) => <DrumPad key={soundItemIdx} handleClick={handleClick}
+                                                                                             audioId={soundItem.key}
+                                                                                             buttonId={soundItem.title}
+                                                                                             url={soundItem.url}
+                            handlePress={handlePress}/>)}
+                        </div>
                     </Col>
-                    <Col id="display" xs="6">
-                        <p>{currentSound}</p>
+                    <Col id="display" xs="3">
+                        <p>{currentSound.title}</p>
                     </Col>
                 </Row>
             </Container>
