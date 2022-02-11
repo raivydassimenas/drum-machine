@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .btn {
@@ -13,17 +13,22 @@
 
     display: flex;
     justify-content: center;
-    width: 300px;
+    width: 500px;
     height: 200px;
     border: #006400 2px solid;
     padding: 5px;
+    background-color: #90ee90;
 
 }
 
 #buttons {
     margin: auto;
+    width: 200px;
 }
 
 #display {
     margin: auto;
+    color: #006400;
+    width: 200px;
+    font-size: 20px;
 }
