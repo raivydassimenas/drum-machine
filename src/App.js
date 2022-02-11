@@ -86,7 +86,7 @@ function App() {
     }
 
     const handlePress = (e) => {
-        const soundItemArray = soundItems.filter(soundItem => soundItem.key.charCodeAt(0) + 32 === e.charCode);
+        const soundItemArray = soundItems.filter(soundItem => soundItem.key.charCodeAt(0) === e.charCode);
         const soundItem = soundItemArray.length === 0 ? {title: "No sound"} : soundItemArray[0];
         setCurrentSound(soundItem);
     }
