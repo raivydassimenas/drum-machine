@@ -59,10 +59,13 @@ function App() {
         setCurrentSound({title: "No sound"});
         window.addEventListener('keypress', handlePress);
         window.addEventListener('click', handleClick);
+        soundItems.forEach((soundItem) => document.getElementById(soundItem.key).addEventListener('ended', () => setCurrentSound({title: "No sound"})));
 
         return () => {
             window.removeEventListener('keypress', handlePress);
             window.removeEventListener('click', handleClick);
+            soundItems.forEach((soundItem) => document.getElementById(soundItem.key).removeEventListener('ended', () => setCurrentSound({title: "No sound"})));
+
         }
     }, []);
 
@@ -73,6 +76,7 @@ function App() {
     const playSound = () => {
         if (currentSound.title !== "No sound")
             document.getElementById(currentSound.key).play();
+        // setCurrentSound({title: "No sound"});
     }
 
     const handleClick = (e) => {
